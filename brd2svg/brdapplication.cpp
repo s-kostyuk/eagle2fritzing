@@ -969,13 +969,14 @@ void BrdApplication::genXml(QDir & workingFolder, QDir & ulpDir, const QString &
 
         process.start(m_eaglePath, QStringList() << "-C" << QString("SCRIPT %1").arg(workingFolder.absoluteFilePath("brd2xml.scr")) << "doesntexist.brd");
 		if (!process.waitForStarted()) {
-			qDebug() << QString("unable to start %1").arg(brdname);
+            QString exitCode = QString::number(process.exitCode());
+            qDebug() << QString("Failed to start eagle script on '%1' file. Error code is '%2'").arg(brdname, exitCode);
 			file.remove();
 			return;
 		}
 
 		if (!process.waitForFinished()) {
-			qDebug() << QString("unable to finish %1").arg(brdname);
+            qDebug() << QString("Failed to finish eagle script on '%1' file").arg(brdname);
 			file.remove();
 			return;
 		}
